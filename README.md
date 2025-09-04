@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# Password Reset Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React + Bootstrap single-page app for password reset (Forgot + Reset pages).
 
-## Available Scripts
+## Live & Repos
 
-In the project directory, you can run:
+- **Frontend (Netlify):** https://password-reset-ronten.netlify.app
+- **Backend (Render):** https://password-reset-backend-r7x4.onrender.com
+- **GitHub (frontend):** https://github.com/jayachandran-student/password-reset-frontend
+- **GitHub (backend):** https://github.com/jayachandran-student/password-reset-backend
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React (CRA), React Router v6
+- Bootstrap
+- Axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Pages & Routes
 
-### `npm test`
+- `/forgot-password` — request reset email
+- `/reset-password/:token` — set a new password
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment Variable
 
-### `npm run build`
+Create `.env` in project root:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+REACT_APP_API_URL=https://password-reset-backend-r7x4.onrender.com
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> Netlify: add the same env var in **Site settings → Build & Deploy → Environment**.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## SPA Redirect (Netlify)
 
-### `npm run eject`
+To prevent 404s on deep links:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Create `public/_redirects` with:
+  /\* /index.html 200
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Local Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git clone https://github.com/jayachandran-student/password-reset-frontend.git
+cd password-reset-frontend
+npm install
+# add .env as above
+npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Build & Deploy (Netlify)
 
-## Learn More
+Build command: npm run build
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Publish directory: build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Node version: add .nvmrc with 18
 
-### Code Splitting
+Environment variables:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+REACT_APP_API_URL=https://password-reset-backend-r7x4.onrender.com
 
-### Analyzing the Bundle Size
+How It Works
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Forgot Password
 
-### Making a Progressive Web App
+POST ${REACT_APP_API_URL}/api/auth/forgot-password
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Shows success/error message from server
 
-### Advanced Configuration
+Reset Password
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+POST ${REACT_APP_API_URL}/api/auth/reset-password/:token with { password }
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+On success, token is invalidated
+```
